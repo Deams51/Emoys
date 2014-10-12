@@ -4,12 +4,17 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float speed;
-	public GUIText countText;
+    public GUIText countText;
 	private int count;
+    EmotionalCharacter character;
 
 	void Start (){
 		count = 0;
-		SetCountText ();
+        countText = new GUIText();
+		SetCountText();
+
+        EmotivEngine engine = this.GetComponent("EmotivEngine") as EmotivEngine;
+        character = engine.character;
 	}
 
 	// Update is called once per frame
@@ -18,12 +23,19 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
+        Vector3 movement;
+        Vector3 movementUp = new Vector3(0,0,0);
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
+        if (Input.GetKeyDown(KeyCode.Space)) movementUp += new Vector3(0.0f, 10.0f, 0.0f); 
+        EmotivEngine engine = this.GetComponent("EmotivEngine") as EmotivEngine;
+        character = engine.character;
 
-		rigidbody.AddForce (movement * speed * Time.deltaTime);
+            movement = new Vector3(moveHorizontal, 0.0f, moveVertical) + movementUp;
+            movement = movement * speed * Time.deltaTime;
+        
+        rigidbody.AddForce(movement);
 	}
 
 	void OnTriggerEnter(Collider other){
