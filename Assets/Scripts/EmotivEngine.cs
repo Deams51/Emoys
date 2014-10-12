@@ -5,6 +5,8 @@ using System; //This allows the IComparable Interface
 
 public class EmotivEngine : MonoBehaviour
 {
+    private EmotionalCharacter character;
+    private Pad emotionTransfer;
     // Use this for initialization
     void Start()
     {
@@ -17,6 +19,53 @@ public class EmotivEngine : MonoBehaviour
 
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        GameObject o = collision.gameObject;
+        EmotionAttributes wall = o.GetComponent("EmotionAttributes") as EmotionAttributes;
+        if (wall != null) emotionTransfer = wall.emotion;
+        UnityEngine.Debug.Log(wall.emotion.ToString());
+    }
+
+    void FixedUpdate()
+    {
+        switch (character.mood)
+        {
+            case "Admiration":
+                break;
+            case "Anger":
+                break;
+            case "Distress":
+                break;
+            case "Gloating":
+                break;
+            case "Gratification":
+                break;
+            case "Gratitude":
+                break;
+            case "Happyfor":
+                break;
+            case "Hate":
+                break;
+            case "Joy":
+                break;
+            case "Love":
+                break;
+            case "Pity":
+                break;
+            case "Pride":
+                break;
+            case "Remorse":
+                break;
+            case "Reproach":
+                break;
+            case "Resentment":
+                break;
+            case "Shame":
+                break;
+        }
+    }
+
     void OnGUI()
     {
     }
@@ -24,7 +73,8 @@ public class EmotivEngine : MonoBehaviour
 
 public class EmotionalCharacter
 {
-    private Pad _moodState;
+    public Pad _moodState = new Pad(0,0,0);
+    public string mood = "";
 
     public struct Action
     {
@@ -91,6 +141,7 @@ public class EmotionalCharacter
 
         //Closest label
         Pad closest = find_closest(_moodState);
+        mood = closest.Name;
         return closest.Name;
     }
 
